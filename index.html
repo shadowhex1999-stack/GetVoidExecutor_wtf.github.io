@@ -1,1 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Void Executor</title>
+  <link rel="icon" type="image/x-icon" href="icon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: #050505;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background-color: #050505; 
+      background-image: 
+        radial-gradient(circle at 50% -20%, rgba(41, 161, 212, 0.25) 0%, transparent 70%),
+        radial-gradient(circle at 80% -10%, rgba(30, 81, 172, 0.15) 0%, transparent 50%);
+    }
+
+    nav {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 25px 8%;
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(12px);
+      background: rgba(5,5,5,0.4);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    .logo span {
+      color: #29A1D4;
+    }
+
+    .nav-btn {
+      background: linear-gradient(135deg, #29A1D4, #1E51AC);
+      padding: 12px 20px;
+      border-radius: 12px;
+      color: black;
+      font-weight: 700;
+      text-decoration: none;
+      transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px rgba(41,161,212,0.4);
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 8%;
+      position: relative;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 10px 18px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.03);
+      margin-bottom: 25px;
+      color: #bbbbbb;
+      font-size: 0.9rem;
+    }
+
+    h1 {
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      line-height: 1;
+      font-weight: 800;
+      margin-bottom: 25px;
+    }
+
+    h1 span {
+      background: linear-gradient(135deg, #29A1D4, #1E51AC);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: #b8b8b8;
+      font-size: 1.2rem;
+      line-height: 1.8;
+      margin-bottom: 40px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 18px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 16px 28px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .primary {
+      background: linear-gradient(135deg, #29A1D4, #1E51AC);
+      color: black;
+    }
+
+    .secondary {
+      border: 1px solid rgba(255,255,255,0.1);
+      color: white;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 0 30px rgba(41,161,212,0.25);
+    }
+
+    .features {
+      padding: 120px 8%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      padding: 35px;
+      transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      backdrop-filter: blur(10px);
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(41,161,212,0.4);
+      box-shadow: 0 0 30px rgba(41,161,212,0.12);
+    }
+
+    .card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 14px;
+    }
+
+    .card p {
+      color: #a5a5a5;
+      line-height: 1.7;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.35;
+      transition: transform 0.6s cubic-bezier(0.1, 0.8, 0.2, 1);
+      pointer-events: none;
+    }
+
+    .orb1 {
+      width: 300px;
+      height: 300px;
+      background: #29A1D4;
+      top: 15%;
+      left: 10%;
+    }
+
+    .orb2 {
+      width: 350px;
+      height: 350px;
+      background: #1E51AC;
+      bottom: 15%;
+      right: 10%;
+    }
+
+    /* =========================
+       GHOST CURSOR TRAIL STYLE
+    ========================= */
+    .cursor-trail {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: #29A1D4; 
+      border-radius: 50%;
+      pointer-events: none; 
+      z-index: 9999; 
+      opacity: 0.7;
+      transform: translate(-50%, -50%);
+    }
+
+    /* =========================
+       PREMIUM REVEAL ANIMATIONS
+    ========================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* =========================
+       FLOATING PARTICLES
+    ========================= */
+    @keyframes floatParticle {
+      0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.6;
+      }
+      90% {
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(-150px) translateX(30px);
+        opacity: 0;
+      }
+    }
+
+    @media(max-width: 768px) {
+      h1 {
+        font-size: 3.5rem;
+      }
+      .hero p {
+        font-size: 1rem;
+      }
+      nav {
+        padding: 20px 5%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg"></div>
+
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<nav>
+  <div class="logo" style="display:flex;align-items:center;gap:12px;">
+    <img src="icon.ico" alt="Void Executor Logo" style="width:42px;height:42px;border-radius:12px;box-shadow:0 0 20px rgba(41,161,212,0.35);">
+    <div>Void<span>Executor</span></div>
+  </div>
+  <a href="https://about:blank" class="nav-btn">Store</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-content reveal">
+    <div class="tag">Next Generation Executor Experience</div>
+
+    <h1>
+      Dominate With <span>Void Executor</span>
+    </h1>
+
+    <p>
+      High-performance external with a modern interface, optimized speed,
+      and a clean user experience designed for advanced users.
+    </p>
+
+    <div class="buttons">
+      <a href="https://discord.gg/UDsz4f7xuY" class="btn primary">Join Discord</a>
+      <a href="#features" class="btn secondary">Learn More</a>
+      <a href="https://guns.lol/valeri511" class="btn secondary">guns.lol</a>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="card reveal">
+    <h3>Optimized Performance</h3>
+    <p>
+      Built for smooth execution and responsiveness with a lightweight architecture.
+    </p>
+  </div>
+
+  <div class="card reveal">
+    <h3>Modern Interface</h3>
+    <p>
+      Clean visuals, fluid animations, and an intuitive layout for a premium feel.
+    </p>
+  </div>
+
+  <div class="card reveal">
+    <h3>Frequent Updates</h3>
+    <p>
+      Continuous improvements, patches, and new functionality to keep everything updated.
+    </p>
+  </div>
+</section>
+
+<footer style="position:relative;overflow:hidden;">
+  <img src="icon.ico" alt="background logo" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:90px;height:90px;opacity:0.06;filter:blur(1px);pointer-events:none;">
+  <span style="position:relative;z-index:2;">© 2026 Void Executor — All Rights Reserved</span>
+</footer>
+
+<script>
+/* =========================
+   MOUSE GLOW SETUP
+========================= */
+const orbs = document.querySelectorAll('.orb');
+const glow = document.createElement('div');
+glow.style.position = 'fixed';
+glow.style.width = '220px';
+glow.style.height = '220px';
+glow.style.borderRadius = '50%';
+glow.style.pointerEvents = 'none';
+glow.style.background = 'radial-gradient(circle, rgba(41,161,212,0.40), transparent 70%)';
+glow.style.transform = 'translate(-50%, -50%)';
+glow.style.zIndex = '-1';
+glow.style.filter = 'blur(25px)'; 
+glow.style.transition = 'transform 0.1s ease-out, left 0.1s ease-out, top 0.1s ease-out';
+document.body.appendChild(glow);
+
+/* =========================
+   GHOST CURSOR ENGINE
+========================= */
+const trailCount = 8; // Number of tail elements
+const trails = [];
+let mouseX = 0;
+let mouseY = 0;
+
+// Generate elements safely inside the DOM
+for (let i = 0; i < trailCount; i++) {
+    const div = document.createElement('div');
+    div.className = 'cursor-trail';
+    document.body.appendChild(div);
+    trails.push({ element: div, x: 0, y: 0 });
+}
+
+// Unified listener to capture mouse positions perfectly
+document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+
+    // Direct update to glow layer position
+    glow.style.left = `${e.clientX}px`;
+    glow.style.top = `${e.clientY}px`;
+
+    // Parallax computations for orbs
+    const x = e.clientX / window.innerWidth;
+    const y = e.clientY / window.innerHeight;
+    orbs.forEach((orb, index) => {
+        const speed = (index + 1) * 45;
+        const moveX = (x - 0.5) * speed;
+        const moveY = (y - 0.5) * speed;
+        orb.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    });
+});
+
+// High-performance animation frame loop for the trailing chain
+function updateAnimationLoop() {
+    let targetX = mouseX;
+    let targetY = mouseY;
+
+    trails.forEach((trail, index) => {
+        // High quality elastic interpolation calculation (0.28 value creates tight organic snaking)
+        trail.x += (targetX - trail.x) * 0.28;
+        trail.y += (targetY - trail.y) * 0.28;
+
+        const scale = 1 - (index / trailCount);
+        trail.element.style.left = `${trail.x}px`;
+        trail.element.style.top = `${trail.y}px`;
+        trail.element.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        trail.element.style.opacity = 0.7 * scale;
+
+        // Force consecutive dots to trace the step of the previous dot
+        targetX = trail.x;
+        targetY = trail.y;
+    });
+
+    requestAnimationFrame(updateAnimationLoop);
+}
+requestAnimationFrame(updateAnimationLoop);
+
+/* =========================
+   FLOATING BACKGROUND PARTICLES
+========================= */
+const particleCount = 120;
+for (let i = 0; i < particleCount; i++) {
+    const particle = document.createElement('div');
+    const size = Math.random() * 5 + 3;
+
+    particle.style.position = 'fixed';
+    particle.style.width = `${size}px`;
+    particle.style.height = `${size}px`;
+    particle.style.borderRadius = '50%';
+    particle.style.background = 'rgba(41,161,212,0.3)';
+    particle.style.left = `${Math.random() * 100}%`;
+    particle.style.top = `${Math.random() * 100}%`;
+    particle.style.pointerEvents = 'none';
+    particle.style.zIndex = '-1';
+    particle.style.animation = `floatParticle ${Math.random() * 8 + 12}s linear infinite`;
+    particle.style.animationDelay = `${Math.random() * -20}s`;
+
+    document.body.appendChild(particle);
+}
+
+/* =========================
+   SMOOTH REVEAL INTERSECTION OBSERVER
+========================= */
+const revealElements = document.querySelectorAll('.reveal');
+const observerOptions = {
+    root: null,
+    threshold: 0.1,
+    rootMargin: "0px 0px -50px 0px"
+};
+
+const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+            observer.unobserve(entry.target);
+        }
+    });
+}, observerOptions);
+
+revealElements.forEach(element => {
+    revealObserver.observe(element);
+});
+</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a0618afa2e95d0c4',t:'MTc4MDUxOTU0MA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
